@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 mpc --format "%title%\n%artist%\n%album%\n%track%\n%time%" | head -n 5 | grep -v 'volume' > ~/.psi/tune
 
 while [ 1 ]
