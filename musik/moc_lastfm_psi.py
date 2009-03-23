@@ -14,6 +14,8 @@
 # Author: Luke Plant  < http://lukeplant.me.uk/ >
 # License: public domain
 
+# psi_tune function by Stjujckij Nickolaj
+
 from datetime import datetime
 from optparse import OptionParser
 from subprocess import call, Popen, PIPE
