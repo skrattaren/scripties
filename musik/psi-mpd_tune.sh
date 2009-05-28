@@ -8,10 +8,12 @@
 # Either export them, or run script that way:
 # $ MPD_HOST="nonlocalhost" MPD_PORT="6666" ./psi_tune.sh
 
+# This version uses 'idle' command for convenience. It requires mpc 0.16 and mpd 0.14
+# If you use older versions, see older revisions
+
 mpc --format "%title%\n%artist%\n%album%\n%track%\n%time%" | head -n -2 > ~/.psi/tune
 
-while [ 1 ]
+while mpc idle
 do
-sleep 13s
 mpc --format "%title%\n%artist%\n%album%\n%track%\n%time%" | head -n -2 > ~/.psi/tune
 done
