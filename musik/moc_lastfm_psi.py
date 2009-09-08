@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # A wrapper script that interfaces between MOC (Music on console) and
-# lastfmsubmit.  The problem with just usnig OnSongChange is that it
+# lastfmsubmit.  The problem with just using OnSongChange is that it
 # will be triggered even if you listen to only one second of a song.
 # This script will wait for half the length of the track, checking
 # whether MOC is still playing it, before submitting the track to
@@ -71,11 +71,13 @@ def main():
             exit(0)
 
 def psi_tune(options):
-    PSIDATADIR = '/home/sterkrig/.psi/'
+    PSIDATADIR = os.getenv('PSIDATADIR')
+    if not PSIDATADIR:
+        PSIDATADIR = os.getenv('HOME') + '/.psi/'
     tunefile = open(PSIDATADIR+'tune', 'w')
-    tunefile.write('%s\n%s\n%s\n%s\n%s' % (options.title, options.artist, options.album, options.track, options.length))
+    tunefile.write('%s\n%s\n%s\n%s\n%s\n' % (options.title, options.artist, options.album, options.track, options.length))
     tunefile.close()
 
 if __name__ == '__main__':
-    import sys
+    import sys, os
     main()
