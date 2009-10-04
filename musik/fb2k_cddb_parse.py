@@ -29,7 +29,8 @@ CDDB_DIR = '/home/sterkrig/tmp/cddb/'
 OUTPUT_FILE = '/home/sterkrig/tmp/fddb.txt'
 
 # Some constants
-SYMBOLS = '\x01\x02\x03\x04\x05\x06\x07\x08\x0b\x16\r\t'
+SYMBOLS = '''\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f
+ \x12\x13\x16\x17\x19\x1c\r\t'''
 KWDS = ['album', 'artist', 'comment', 'date', 'genre',
         'title', 'totaltracks', 'tracknumber']
 
@@ -41,14 +42,16 @@ def print_dictlist(dict_list):
             print "%s: %s" % (key, val)
         print '-------'
 
-def parse_file(cdfile):
+def parse_file(cdfile, DEBUG=False):
     ''' Parses file object and returns list of track dictionaries '''
 #   This regexp might be needed
 #    pattern = re.compile(
 #            r'[\s\w]+'
 #            , re.UNICODE)
-    cdstring = cdfile.readline()            # read file
-    raw_list = cdstring.split('\x00')       # split by special symbols
+    cdstring = '\x00'.join(cdfile.readlines())  # read file
+    raw_list = cdstring.split('\x00')           # split by special symbols
+
+    if DEBUG: print cdstring, '\n', len(cdstring), '\n', raw_list
 
     data_list = []
     for string in raw_list:
@@ -56,15 +59,16 @@ def parse_file(cdfile):
 #           strip strings from special symbols and try to decode them
             string = string.strip(SYMBOLS)
             if string:
-                string = string.decode("utf-8")
-                data_list.append(string)
+                ustring = string.decode("utf-8")
+#                if DEBUG: print repr(string)
+                data_list.append(ustring)
         except UnicodeDecodeError:
             pass                            # fail silently and skip string
 
     dict_list = []; curr_dict = {}; curr_key = None
     for string in data_list:
-        if string in KWDS:
-            curr_key = string                   # remember string as key
+        if string.lower() in KWDS:
+            curr_key = string.lower()           # remember string as key
             if curr_dict.has_key(curr_key):
                 dict_list.append(curr_dict)     # remember trackdict
                 curr_dict = {}                  # and start new one
@@ -78,15 +82,34 @@ def parse_file(cdfile):
 
     return dict_list
 
-# try with this file
-cdfile = open('%s%s0020918D' % (CDDB_DIR, os.sep),  'r')
-print_dictlist(parse_file(cdfile))
-cdfile.close()
+def export(dict_list, out_file=None):
+    out_file.write(os.linesep)
+    for curr_dict in dict_list:
+        out_file.write('%s. %s - %s (%s - %s)%s' %
+                   (curr_dict['tracknumber'],
+                   curr_dict['artist'],
+                   curr_dict['title'],
+                   curr_dict['date'],
+                   curr_dict['album'],
+                   os.linesep
+                   ))
+
+def debug(filename):
+    cdfile = open('%s%s%s' % (CDDB_DIR, os.sep, filename),  'rb')
+    print parse_file(cdfile, DEBUG=True)
+    cdfile.close()
 
 
 def main():
     ''' Cycles through directory and parses files '''
+    out_file = open(OUTPUT_FILE, 'ab')
     for cdfilename in os.listdir(CDDB_DIR):
         cdfile = open('%s%s%s' % (CDDB_DIR, os.sep, cdfilename),  'r')
-        parse_file(cdfile)
+        export(parse_file(cdfile),
+                out_file)
         cdfile.close()
+    out_file.close()
+
+if __name__ == '__main__':
+    main()
+#    debug('039A24E4')
