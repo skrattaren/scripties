@@ -13,7 +13,13 @@
 
 mpc --format "%title%\n%artist%\n%album%\n%track%\n%time%" | head -n -2 > ~/.psi/tune
 
+while [ 1 ]
+do
+
 while mpc idle
 do
 mpc --format "%title%\n%artist%\n%album%\n%track%\n%time%" | head -n -2 > ~/.psi/tune
+done
+
+sleep 13
 done
