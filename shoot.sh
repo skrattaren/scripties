@@ -13,5 +13,5 @@ FILE=$PATH/$FILENAME
 
 /usr/bin/scrot $SWITCH $FILE
 /usr/bin/optipng $FILE
-/usr/bin/uimge -i --usr=#url# $FILE | xclip
+/usr/bin/uimge -r --usr=#url# $FILE | /usr/bin/xclip
 
