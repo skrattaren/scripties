@@ -9,9 +9,13 @@ if [[ $1 == '-s' ]]
     else FILENAME=$1
 fi
 
+if [[ ${FILENAME##*.} != 'png' && $FILENAME != 'png' ]]
+    then FILENAME=$FILENAME.png
+fi
+
 FILE=$PATH/$FILENAME
 
 /usr/bin/scrot $SWITCH $FILE
 /usr/bin/optipng $FILE
-/usr/bin/uimge -r --usr=#url# $FILE | /usr/bin/xclip
+/usr/bin/uimge -i --usr=#url# $FILE | /usr/bin/xclip
 
