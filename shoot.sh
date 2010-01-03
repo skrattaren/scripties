@@ -9,6 +9,11 @@ if [[ $1 == '-s' ]]
     else FILENAME=$1
 fi
 
+if [ -z $FILENAME ]
+    then PATH="/tmp"
+         FILENAME=$(/bin/date +%F_%T)
+fi
+
 if [[ ${FILENAME##*.} != 'png' && $FILENAME != 'png' ]]
     then FILENAME=$FILENAME.png
 fi
