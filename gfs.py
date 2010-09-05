@@ -27,7 +27,17 @@ def qt_display(size):
     ui.show()
     sys.exit(qtapp.exec_())
 
+def gtk_display(size):
+    import gtk
+    dialog = gtk.MessageDialog(
+        message_format="Size: %s" % size,
+    )
+    dialog.set_title("GFS")
+    dialog.connect('destroy', gtk.main_quit)
+    dialog.show()
+    gtk.main()
+
 if __name__ == "__main__":
     url = sys.argv[1]
     size = main(url)
-    qt_display(size)
+    gtk_display(size)
