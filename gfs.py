@@ -39,6 +39,9 @@ def gtk_display(size):
 
 if __name__ == "__main__":
     selfname = sys.argv[0].split('/')[-1]
+    if len(sys.argv) != 2:
+        print("Script requires only one URL argument", sys.stderr)
+        sys.exit(1)
     url = sys.argv[1]
     size = main(url)
     if selfname.startswith("qt"):
