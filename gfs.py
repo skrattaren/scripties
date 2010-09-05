@@ -38,6 +38,13 @@ def gtk_display(size):
     gtk.main()
 
 if __name__ == "__main__":
+    selfname = sys.argv[0].split('/')[-1]
     url = sys.argv[1]
     size = main(url)
-    gtk_display(size)
+    if selfname.startswith("qt"):
+        qt_display(size)
+    elif selfname.startswith("gtk"):
+        gtk_display(size)
+    else:
+        print("Size: " + size)
+
