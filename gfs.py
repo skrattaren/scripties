@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import sys, urllib2
 
 UNITS=(None, " Kb", " Mb", " Gb", " Tb")
@@ -40,7 +41,7 @@ def gtk_display(size):
 if __name__ == "__main__":
     selfname = sys.argv[0].split('/')[-1]
     if len(sys.argv) != 2:
-        print("Script requires only one URL argument", sys.stderr)
+        print("Script requires only one URL argument", file=sys.stderr)
         sys.exit(1)
     url = sys.argv[1]
     size = main(url)
