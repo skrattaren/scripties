@@ -3,7 +3,8 @@
 from __future__ import print_function
 import sys, urllib2
 
-UNITS=(None, " Kb", " Mb", " Gb", " Tb")
+UNITS = (None, " Kb", " Mb", " Gb", " Tb")
+WIN_TITLE = "File size"
 
 def findout(num, step=0):
     if num < 1024 or step >= len(UNITS) - 1:
@@ -24,7 +25,7 @@ def qt_display(size):
     ui = QtGui.QMessageBox()
     ui.setText("Size: " + size)
     ui.resize(320, 240)
-    ui.setWindowTitle("GTF^H^HFS")
+    ui.setWindowTitle(WIN_TITLE)
     ui.show()
     sys.exit(qtapp.exec_())
 
@@ -33,7 +34,7 @@ def gtk_display(size):
     dialog = gtk.MessageDialog(
         message_format="Size: %s" % size,
     )
-    dialog.set_title("GFS")
+    dialog.set_title(WIN_TITLE)
     dialog.connect('destroy', gtk.main_quit)
     dialog.show()
     gtk.main()
@@ -41,14 +42,20 @@ def gtk_display(size):
 if __name__ == "__main__":
     selfname = sys.argv[0].split('/')[-1]
     if len(sys.argv) != 2:
-        print("Script requires only one URL argument", file=sys.stderr)
+        print("Script requires only one URL argument, see --help", file=sys.stderr)
         sys.exit(1)
     url = sys.argv[1]
-    size = main(url)
+    try:
+        size = main(url)
+    except urllib2.URLError, exc:
+        print(exc.args[0], file=sys.stderr)
+        sys.exit(1)
     if selfname.startswith("qt"):
         qt_display(size)
     elif selfname.startswith("gtk"):
         gtk_display(size)
     else:
         print("Size: " + size)
+        print("If you want a PyQt/PyGTK window, rename a script to")
+        print("something starting with 'qt' or 'gtk', respectively")
 
