@@ -74,7 +74,7 @@ if __name__ == "__main__":
         print("or with 'gtk' for a GTK one, and provide one URL argument")
         sys.exit(0)
 
-    url = sys.argv[1]
+    url = sys.argv[1].replace('http:/', 'http://')
     try:
         size = main(url)
     except urllib2.URLError, exc:
