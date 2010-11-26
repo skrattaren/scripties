@@ -10,7 +10,7 @@ beginning with 'gtk' - PyGTK one, otherwise size gets printed to stdout.
 '''
 
 from __future__ import print_function
-import sys, urllib2
+import re, sys, urllib2
 
 UNITS = (None, " Kb", " Mb", " Gb", " Tb")
 WIN_TITLE = "File size"
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         print("or with 'gtk' for a GTK one, and provide one URL argument")
         sys.exit(0)
 
-    url = sys.argv[1].replace('http:/', 'http://')
+    url = re.compile(r'((?:ht|f)tps?):/{1,2}').sub("\\1://", sys.argv[1])
     try:
         size = main(url)
     except urllib2.URLError, exc:
