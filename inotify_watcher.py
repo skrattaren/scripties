@@ -13,8 +13,10 @@ Distributed under the terms of the GNU General Public License v3
 '''
 
 from optparse import OptionParser, OptionGroup
+import os.path
 
 import inotifyx
+import docutils.core
 from pygments import highlight
 from pygments.lexers import guess_lexer, guess_lexer_for_filename
 from pygments.formatters import TerminalFormatter
@@ -44,7 +46,10 @@ def highlight_watched(filename):
 @register_action('rsthtml')
 def view_rst_as_html(filename):
     ''' Function converting reStructuredText to HTML for display in browser '''
-    pass
+    htmlfile = '/tmp/%s.html' % os.path.basename(filename)
+    print('file://%s' % htmlfile)
+    docutils.core.publish_file(source_path=filename, destination_path=htmlfile,
+                               writer_name='html')
 
 def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     ''' ``inotify``-based watcher, applying function on modification events '''
