@@ -54,10 +54,16 @@ def view_rst_as_html(filename):
 def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     ''' ``inotify``-based watcher, applying function on modification events '''
     watcher = inotifyx.init()
-    inotifyx.add_watch(watcher, file_to_watch, inotifyx.IN_MODIFY)
+    dirname = os.path.dirname(file_to_watch) or '.'
+    basename = os.path.basename(file_to_watch)
+    # we watch for CLOSE_WRITE events in directory and filter them by file name
+    # because editors like vim do save&rename instead if simple modification
+    inotifyx.add_watch(watcher, dirname, inotifyx.IN_CLOSE_WRITE)
+    events = None
     while True:
-        action(file_to_watch, *action_args, **action_kwargs)
-        inotifyx.get_events(watcher)
+        if events is None or list(ev for ev in events if ev.name == basename):
+            action(file_to_watch, *action_args, **action_kwargs)
+        events = inotifyx.get_events(watcher)
 
 def main():
     ''' Mainloop function handling arguments and control flow '''
