@@ -56,7 +56,7 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     watcher = inotifyx.init()
     inotifyx.add_watch(watcher, file_to_watch, inotifyx.IN_MODIFY)
     while True:
-        action(*action_args, **action_kwargs)
+        action(file_to_watch, *action_args, **action_kwargs)
         inotifyx.get_events(watcher)
 
 def main():
@@ -78,7 +78,7 @@ def main():
         sys.stderr.write("Unknown action: '%s'\n" % options.action)
         sys.exit(1)
     try:
-        ino_watch(file_to_watch, action, [file_to_watch])
+        ino_watch(file_to_watch, action)
     except KeyboardInterrupt:
         print('\nCaught keyboard interrupt, exiting')
 
