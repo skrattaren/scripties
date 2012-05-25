@@ -68,10 +68,15 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     # we watch for CLOSE_WRITE events in directory and filter them by file name
     # because editors like vim do save&rename instead if simple modification
     inotifyx.add_watch(watcher, dirname, inotifyx.IN_CLOSE_WRITE)
-    events = None
+    # wrap action to avoid code duplication
+    action_lambda = lambda dummy=None: action(file_to_watch, *action_args,
+                                                             **action_kwargs)
+    # run the first time
+    action_lambda()
+    events = []
     while True:
-        if events is None or list(ev for ev in events if ev.name == basename):
-            action(file_to_watch, *action_args, **action_kwargs)
+        if list(ev for ev in events if ev.name == basename):
+            action_lambda()
         events = inotifyx.get_events(watcher)
 
 
