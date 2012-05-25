@@ -75,7 +75,7 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     action_lambda()
     events = []
     while True:
-        if list(ev for ev in events if ev.name == basename):
+        if basename in (ev.name for ev in events):
             action_lambda()
         events = inotifyx.get_events(watcher)
 
