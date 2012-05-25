@@ -73,11 +73,10 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
                                                              **action_kwargs)
     # run the first time
     action_lambda()
-    events = []
     while True:
+        events = inotifyx.get_events(watcher)
         if basename in (ev.name for ev in events):
             action_lambda()
-        events = inotifyx.get_events(watcher)
 
 
 def main():
