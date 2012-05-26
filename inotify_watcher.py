@@ -31,10 +31,7 @@ def register_action(name=None, catalogue=implemented_actions):
     def register_closure(f):
         cat_name = name or f.__name__
         catalogue[cat_name] = f
-
-        def tmp(*args, **kwargs):
-            return f(*args, **kwargs)
-        return tmp
+        return f
 
     return register_closure
 
