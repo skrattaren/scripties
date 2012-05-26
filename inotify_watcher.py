@@ -27,10 +27,10 @@ implemented_actions = {}
 
 def register_action(name=None, catalogue=implemented_actions):
     ''' Registration decorator, maintaining dict of implemented actions'''
-    name = name or f.__name__
 
     def register_closure(f):
-        catalogue[name] = f
+        cat_name = name or f.__name__
+        catalogue[cat_name] = f
 
         def tmp(*args, **kwargs):
             return f(*args, **kwargs)
