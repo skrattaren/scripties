@@ -25,13 +25,24 @@ from pygments.formatters import TerminalFormatter
 implemented_actions = {}
 
 
-def register_action(name=None, catalogue=implemented_actions):
+def register_action(name=None, is_firsttimer=False,
+                               catalogue=implemented_actions):
     ''' Registration decorator, maintaining dict of implemented actions'''
 
     def register_closure(f):
         cat_name = name or f.__name__
-        catalogue[cat_name] = f
-        return f
+        if is_firsttimer:
+            add_kwargs = {'first_time': True}
+
+        def tmp(*args, **kwargs):
+            if add_kwargs.get('first_time', False):
+                kwargs['first_time'] = True
+                add_kwargs['first_time'] = False
+            return f(*args, **kwargs)
+
+        catalogue[cat_name] = tmp
+        # we won't really need it, but return nevertheless
+        return tmp
 
     return register_closure
 
@@ -47,11 +58,12 @@ def highlight_watched(filename):
     print(content)
 
 
-@register_action('rsthtml')
-def view_rst_as_html(filename):
+@register_action('rsthtml', is_firsttimer=True)
+def view_rst_as_html(filename, first_time=False):
     ''' Function converting reStructuredText to HTML for display in browser '''
     htmlfile = '/tmp/%s.html' % os.path.basename(filename)
-    print('file://%s' % htmlfile)
+    if first_time:
+        print('file://%s' % htmlfile)
     docutils.core.publish_file(source_path=filename, destination_path=htmlfile,
                                writer_name='html')
 
