@@ -30,7 +30,6 @@ def register_action(name=None, is_firsttimer=False,
     ''' Registration decorator, maintaining dict of implemented actions'''
 
     def register_closure(f):
-        cat_name = name or f.__name__
         if is_firsttimer:
             add_kwargs = {'first_time': True}
 
@@ -40,7 +39,7 @@ def register_action(name=None, is_firsttimer=False,
                 add_kwargs['first_time'] = False
             return f(*args, **kwargs)
 
-        catalogue[cat_name] = tmp
+        catalogue[name or f.__name__] = tmp
         # we won't really need it, but return nevertheless
         return tmp
 
