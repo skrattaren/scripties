@@ -18,10 +18,6 @@ import subprocess
 import time
 
 import inotifyx
-import docutils.core
-from pygments import highlight
-from pygments.lexers import guess_lexer_for_filename
-from pygments.formatters import TerminalFormatter
 
 implemented_actions = {}
 
@@ -67,6 +63,9 @@ def page_output(f):
 @page_output
 def highlight_watched(filename):
     ''' File contents highlighter '''
+    from pygments import highlight
+    from pygments.lexers import guess_lexer_for_filename
+    from pygments.formatters import TerminalFormatter
     with open(filename, 'r') as file_to_read:
         content = file_to_read.read()
     content = highlight(content,
@@ -78,6 +77,7 @@ def highlight_watched(filename):
 @register_action('rsthtml', is_firsttimer=True)
 def view_rst_as_html(filename, first_time=False):
     ''' Function converting reStructuredText to HTML for display in browser '''
+    import docutils.core
     htmlfile = '/tmp/%s.html' % os.path.basename(filename)
     if first_time:
         print('file://%s' % htmlfile)
