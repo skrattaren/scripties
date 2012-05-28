@@ -34,6 +34,7 @@ def register_action(name=None, is_firsttimer=False,
 
     def register_closure(f):
         cat_name = name or f.__name__
+        # it'd be nice to have `nonlocal` here in Python 2.x
         add_kwargs = {}
         if is_firsttimer:
             add_kwargs['first_time'] = True
