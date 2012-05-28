@@ -31,8 +31,9 @@ def register_action(name=None, is_firsttimer=False,
 
     def register_closure(f):
         cat_name = name or f.__name__
+        add_kwargs = {}
         if is_firsttimer:
-            add_kwargs = {'first_time': True}
+            add_kwargs['first_time'] = True
 
         def tmp(*args, **kwargs):
             if add_kwargs.get('first_time', False):
