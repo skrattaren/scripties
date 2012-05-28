@@ -52,8 +52,10 @@ def page_output(f):
     def paging_wrapper(*args, **kwargs):
         import sys
         output = f(*args, **kwargs)
+        if isinstance(output, unicode):
+            output = output.encode('utf-8')
         pager = subprocess.Popen(PAGER_OPTS, stdin=subprocess.PIPE)
-        pager.stdin.write(output.encode('utf-8'))
+        pager.stdin.write(output)
         pager.stdin = sys.stdin
         return None
     return paging_wrapper
