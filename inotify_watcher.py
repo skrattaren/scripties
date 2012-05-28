@@ -14,6 +14,7 @@ Distributed under the terms of the GNU General Public License v3
 
 from optparse import OptionParser
 import os.path
+import subprocess
 import time
 
 import inotifyx
@@ -23,6 +24,8 @@ from pygments.lexers import guess_lexer_for_filename
 from pygments.formatters import TerminalFormatter
 
 implemented_actions = {}
+
+PAGER_OPTS = ['less', '-']
 
 
 def register_action(name=None, is_firsttimer=False,
@@ -48,7 +51,20 @@ def register_action(name=None, is_firsttimer=False,
     return register_closure
 
 
+def page_output(f):
+    ''' Pipes output through pager (i.e. `less`) '''
+    def paging_wrapper(*args, **kwargs):
+        import sys
+        output = f(*args, **kwargs)
+        pager = subprocess.Popen(PAGER_OPTS, stdin=subprocess.PIPE)
+        pager.stdin.write(output.encode('utf-8'))
+        pager.stdin = sys.stdin
+        return None
+    return paging_wrapper
+
+
 @register_action('hlite')
+@page_output
 def highlight_watched(filename):
     ''' File contents highlighter '''
     with open(filename, 'r') as file_to_read:
@@ -56,7 +72,7 @@ def highlight_watched(filename):
     content = highlight(content,
                         guess_lexer_for_filename(filename, ""),
                         TerminalFormatter(bg='dark'))
-    print(content)
+    return content
 
 
 @register_action('rsthtml', is_firsttimer=True)
