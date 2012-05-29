@@ -22,6 +22,7 @@ import inotifyx
 implemented_actions = {}
 
 PAGER_OPTS = ['less', '-']
+NROFF_OPTS = ['nroff', '-Tutf8', '-man', '-']
 
 
 def register_action(name=None, is_firsttimer=False,
@@ -85,6 +86,21 @@ def view_rst_as_html(filename, first_time=False):
         print('file://%s' % htmlfile)
     docutils.core.publish_file(source_path=filename, destination_path=htmlfile,
                                writer_name='html')
+
+
+@register_action('rstman')
+@page_output
+def rst2man(filename):
+    ''' File contents highlighter '''
+    import docutils.core
+    content = docutils.core.publish_file(source_path=filename,
+                                         writer_name='manpage')
+    nroffer = subprocess.Popen(NROFF_OPTS, stdin=subprocess.PIPE,
+                                           stdout=subprocess.PIPE)
+    output, errors = nroffer.communicate(input=content)
+    return output.decode('utf-8'
+                ).encode('latin1', errors='replace'
+                ).decode('utf-8', errors='replace')
 
 
 def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
