@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Get a fortune from `fortune`, format it, and display via D-Bus notification
 # system. Time for quote to hang on the screen is calculated by the word number
@@ -9,5 +9,6 @@ WHAT="discworld"
 fortext="$(fortune $WHAT | fmt -stuw 110)"
 length=$(echo "$fortext" | wc -w)
 let "time=length*1000"
-sw-notify-send "Discworld" "$fortext" -t $time
+# ${var^}-syntax is bash4-specific
+sw-notify-send "${WHAT^}" "$fortext" -t $time
 
