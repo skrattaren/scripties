@@ -99,8 +99,8 @@ def rst2man(filename):
                                            stdout=subprocess.PIPE)
     output, errors = nroffer.communicate(input=content)
     return output.decode('utf-8'
-                ).encode('latin1', errors='replace'
-                ).decode('utf-8', errors='replace')
+                                ).encode('latin1', errors='replace'
+                                ).decode('utf-8', errors='replace')
 
 
 def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
