@@ -91,7 +91,7 @@ def view_rst_as_html(filename, first_time=False):
 @register_action('rstman')
 @page_output
 def rst2man(filename):
-    ''' File contents highlighter '''
+    ''' Render rST-file as a manpage '''
     import docutils.core
     content = docutils.core.publish_file(source_path=filename,
                                          writer_name='manpage')
