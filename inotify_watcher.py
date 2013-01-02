@@ -113,8 +113,7 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     # because editors like vim do save&rename instead of simple modification
     inotifyx.add_watch(watcher, dirname, inotifyx.IN_CLOSE_WRITE)
     # wrap action to avoid code duplication
-    action_lambda = lambda dummy=None: action(file_to_watch, *action_args,
-                                                             **action_kwargs)
+    action_lambda = lambda: action(file_to_watch, *action_args, **action_kwargs)
     # run the first time
     action_lambda()
     while True:
