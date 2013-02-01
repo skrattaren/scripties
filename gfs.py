@@ -11,7 +11,7 @@ beginning with 'gtk' - PyGTK one, otherwise size gets printed to stdout.
 
 from __future__ import print_function
 from __future__ import unicode_literals
-import re, sys
+import os, re, sys
 
 try:
     from urllib2 import URLError, urlopen
@@ -73,7 +73,7 @@ def gtk_display(size):
 
 if __name__ == "__main__":
     # process and handle args etc.
-    selfname = sys.argv[0].split('/')[-1]
+    selfname = os.path.basename(sys.argv[0])
 
     if len(sys.argv) != 2:
         die("Script requires only one URL argument, see --help")
