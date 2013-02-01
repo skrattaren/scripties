@@ -10,7 +10,15 @@ beginning with 'gtk' - PyGTK one, otherwise size gets printed to stdout.
 '''
 
 from __future__ import print_function
-import re, sys, urllib2
+from __future__ import unicode_literals
+import re, sys
+
+try:
+    from urllib2 import URLError, urlopen
+except ImportError:
+    #py3k!
+    from urllib.error import URLError
+    from urllib.request import urlopen
 
 UNITS = (None, " Kb", " Mb", " Gb", " Tb")
 WIN_TITLE = "File size"
@@ -29,9 +37,9 @@ def findout(num, step=0):
 
 def main(url):
     ''' Processes URL '''
-    rem_file = urllib2.urlopen(url)
-    fdata = rem_file.info()
-    size = int(fdata.getheader('content-length'))
+    remote_file = urlopen(url)
+    fdata = remote_file.info()
+    size = int(fdata.get('content-length'))
     num, unit_no = findout(size)
     return str(num) + (UNITS[unit_no] or '')
 
@@ -77,7 +85,7 @@ if __name__ == "__main__":
     url = re.compile(r'((?:ht|f)tps?):/{1,2}').sub("\\1://", sys.argv[1])
     try:
         size = main(url)
-    except urllib2.URLError, exc:
+    except URLError as exc:
         die(exc.args[0])
 
     if selfname.startswith("qt"):
