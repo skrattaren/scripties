@@ -68,7 +68,7 @@ if __name__ == "__main__":
     selfname = sys.argv[0].split('/')[-1]
 
     if len(sys.argv) != 2:
-        die("Script requires only one URL argument, see --help", file=sys.stderr)
+        die("Script requires only one URL argument, see --help")
     if sys.argv[1] == "-h" or sys.argv[1] == "--help":
         print("Rename a file for its name to begin with 'qt' to get a Qt interface")
         print("or with 'gtk' for a GTK one, and provide one URL argument")
