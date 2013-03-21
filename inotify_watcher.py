@@ -104,7 +104,16 @@ def rst2man(filename):
                                 ).decode('utf-8', errors='replace')
 
 
-def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
+@register_action('cmd')
+def run_cmd(_, cmd):
+    ''' Run specified command '''
+    import shlex
+    cmd = shlex.split(cmd)
+    cmd_process = subprocess.Popen(cmd)
+    output, errors = cmd_process.communicate()
+
+
+def ino_watch(file_to_watch, action, *action_args):
     ''' ``inotify``-based watcher, applying function upon
         *write-and-close* events '''
     watcher = inotifyx.init()
@@ -114,8 +123,7 @@ def ino_watch(file_to_watch, action, action_args=[], action_kwargs={}):
     # because editors like vim do save&rename instead of simple modification
     inotifyx.add_watch(watcher, dirname, inotifyx.IN_CLOSE_WRITE)
     # wrap action to avoid code duplication
-    action_lambda = lambda: action(file_to_watch, *action_args,
-                                                  **action_kwargs)
+    action_lambda = lambda: action(file_to_watch, *action_args)
     # run the first time
     action_lambda()
     while True:
@@ -131,6 +139,9 @@ def main():
     opt_parser.add_option("-a", "--action", dest="action",
                           help="action to be undertaken",
                           metavar="ACTION", default='hlite')
+    opt_parser.add_option("-A", "--action-options", dest="action_options",
+                          help="options for actions (if applicable)",
+                          metavar="ACTION_OPTIONS")
     (options, args) = opt_parser.parse_args()
     if len(args) > 1:
         #TODO: use logging
@@ -144,8 +155,15 @@ def main():
         #TODO: use logging
         sys.stderr.write("Unknown action: '%s'\n" % options.action)
         sys.exit(1)
+    #TODO: implement with decorator
+    if options.action == 'cmd' and options.action_options is None:
+        import sys
+        sys.stderr.write("No command for 'cmd' action specified\n")
+        sys.exit(1)
+
+    action_args = [options.action_options] if options.action_options else []
     try:
-        ino_watch(file_to_watch, action)
+        ino_watch(file_to_watch, action, *action_args)
     except KeyboardInterrupt:
         #TODO: use logging
         print('\nCaught keyboard interrupt, exiting')
