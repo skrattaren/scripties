@@ -83,6 +83,7 @@ def view_rst_as_html(filename, first_time=False):
     import docutils.core
     htmlfile = '/tmp/%s.html' % os.path.basename(filename)
     if first_time:
+        #TODO: use logging
         print('file://%s' % htmlfile)
     docutils.core.publish_file(source_path=filename, destination_path=htmlfile,
                                writer_name='html')
@@ -131,6 +132,7 @@ def main():
                       metavar="ACTION", default='hlite')
     (options, args) = opt_parser.parse_args()
     if len(args) > 1:
+        #TODO: use logging
         print("How should I know what to watch from this list?\n"
               "Watching only first one, '%s'" % args[0])
         time.sleep(7)
@@ -138,11 +140,13 @@ def main():
     action = implemented_actions.get(options.action)
     if not action:
         import sys
+        #TODO: use logging
         sys.stderr.write("Unknown action: '%s'\n" % options.action)
         sys.exit(1)
     try:
         ino_watch(file_to_watch, action)
     except KeyboardInterrupt:
+        #TODO: use logging
         print('\nCaught keyboard interrupt, exiting')
 
 
