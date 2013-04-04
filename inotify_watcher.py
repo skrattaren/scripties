@@ -117,8 +117,13 @@ def ino_watch(file_to_watch, action, *action_args):
     ''' ``inotify``-based watcher, applying function upon
         *write-and-close* events '''
     watcher = inotifyx.init()
-    dirname = os.path.dirname(file_to_watch) or '.'
-    basename = os.path.basename(file_to_watch)
+    #TODO: implement check like "it's a directory and you don't run a cmd!"
+    if not os.path.isdir(file_to_watch):
+        dirname = os.path.dirname(file_to_watch) or '.'
+        basename = os.path.basename(file_to_watch)
+    else:
+        dirname = file_to_watch
+        basename = None
     # we watch for CLOSE_WRITE events in directory and filter them by file name
     # because editors like vim do save&rename instead of simple modification
     inotifyx.add_watch(watcher, dirname, inotifyx.IN_CLOSE_WRITE)
@@ -128,7 +133,7 @@ def ino_watch(file_to_watch, action, *action_args):
     action_lambda()
     while True:
         events = inotifyx.get_events(watcher)
-        if basename in (ev.name for ev in events):
+        if (basename is None) or (basename in (ev.name for ev in events)):
             action_lambda()
 
 
