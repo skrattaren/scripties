@@ -26,7 +26,7 @@ countdown () {
         sleep 1
         printf "\r\033[K"
     done
-    echo
+    echo -e '\a'
 }
 
 echo "Set #1"
