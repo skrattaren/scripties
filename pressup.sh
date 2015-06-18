@@ -30,7 +30,7 @@ countdown () {
 }
 
 echo "Set #1"
-for i in {2..$ITERATIONS}; do
+for i in `seq 2 $ITERATIONS`; do
     read -p "Press Enter when finished..."
     echo "Waiting $PRESSUP_INT seconds..."
     countdown $PRESSUP_INT
