@@ -18,11 +18,11 @@ fi
 
 ITERATIONS="${ITERATIONS:-5}"
 
-echo "Counting $ITERATIONS times by $PRESSUP_INT"
+echo "Counting for $ITERATIONS sets by $PRESSUP_INT seconde"
 
 countdown () {
     for j in `seq $1 -1 0`; do
-        printf " $j "
+        printf " Rest for $j seconds "
         sleep 1
         printf "\r\033[K"
     done
