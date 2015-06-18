@@ -18,6 +18,8 @@ fi
 
 ITERATIONS="${ITERATIONS:-5}"
 
+echo "Counting $ITERATIONS times by $PRESSUP_INT"
+
 countdown () {
     for j in `seq $1 -1 0`; do
         printf " $j "
