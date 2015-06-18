@@ -34,7 +34,7 @@ for i in {2..$ITERATIONS}; do
     read -p "Press Enter when finished..."
     echo "Waiting $PRESSUP_INT seconds..."
     countdown $PRESSUP_INT
-    mpv --msglevel=all=fatal /Applications/Psi.app/Contents/Resources/sound/ft_complete.wav
+    mpv --msglevel=all=fatal ~/.pressup.snd
     echo "Set #${i}"
 done
 echo "No need to press everything when finished, just do it (-:E"
