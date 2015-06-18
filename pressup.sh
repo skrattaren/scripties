@@ -31,8 +31,8 @@ countdown () {
 
 echo "Set #1"
 for i in `seq 2 $ITERATIONS`; do
-    read -p "Press Enter when finished..."
-    echo "Waiting $PRESSUP_INT seconds..."
+    read -s -r -n1 -p "Press Enter when finished..."
+    printf "\r\033[K"
     countdown $PRESSUP_INT
     mpv --msg-level=all=fatal ~/.pressup.snd
     echo "Set #${i}"
