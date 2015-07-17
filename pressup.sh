@@ -15,19 +15,19 @@
 # number greater is probably a rest interval. So (examples run on Friday):
 
 #  % ./pressup.sh
-# Counting for 5 sets by 120 seconde
+# Counting for 5 sets by 120 seconds
 #
 #  % ./pressup.sh 8
-# Counting for 8 sets by 120 seconde
+# Counting for 8 sets by 120 seconds
 #
 #  % ./pressup.sh 8 45
-# Counting for 8 sets by 45 seconde
+# Counting for 8 sets by 45 seconds
 #
 #  % ./pressup.sh 45 8
-# Counting for 8 sets by 45 seconde
+# Counting for 8 sets by 45 seconds
 #
 #  % ./pressup.sh 45
-# Counting for 5 sets by 45 seconde
+# Counting for 5 sets by 45 seconds
 
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -60,7 +60,7 @@ fi
 
 ITERATIONS="${ITERATIONS:-5}"
 
-echo "Counting for $ITERATIONS sets by $PRESSUP_INT seconde"
+echo "Counting for $ITERATIONS sets by $PRESSUP_INT seconds"
 
 countdown () {
     for j in `seq $1 -1 0`; do
