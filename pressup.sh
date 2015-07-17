@@ -79,4 +79,4 @@ for i in `seq 2 $ITERATIONS`; do
     mpv --msg-level=all=fatal ~/.pressup.snd
     echo "Set #${i}"
 done
-echo "No need to press everything when finished, just do it (-:E"
+echo "No need to press anything when finished, just do it (-:E"
