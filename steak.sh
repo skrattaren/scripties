@@ -2,9 +2,14 @@
 
 INTERVAL=30
 
+if [ ! -n "$1" ]; then
+    echo "Need a file argument to beep with" > /dev/stderr
+    exit 1
+fi
+
 counter=1
 
-FILES=( /opt/homebrew-cask/Caskroom/psi/0.15/Psi.app/Contents/Resources/sound/ft_complete.wav )
+FILES=( "$1" )
 FILES[2]=$FILES[1]
 
 while [ true ]; do
