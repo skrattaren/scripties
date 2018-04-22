@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 INTERVAL=30
-CMD="mpv --msg-level=all=fatal"
+CMD="mpv --no-terminal --volume 130"
 
 if [ ! -n "$1" ]; then
     echo "Need a file argument to beep with" > /dev/stderr
