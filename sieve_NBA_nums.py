@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 '''
-Get lists of NBA uniform numbers from basketball-reference.com and printing
-unused ones within year and since that year.
+Get lists of NBA uniform numbers from basketball-reference.com and print
+unused ones within and since that year.
 '''
 
 import datetime
@@ -11,10 +11,12 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
+
 UNI_NUMS_URL_TMPL = ('https://www.basketball-reference.com/leagues/'
                      'NBA_{}_numbers.html')
-CUR_YEAR = datetime.date.today().year
 CSS_SEL = 'div#div_leaderboard div.data_grid_box table.no_columns caption'
+
+CUR_YEAR = datetime.date.today().year
 
 
 def get_all_nums():
