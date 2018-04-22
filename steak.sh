@@ -21,6 +21,7 @@ while [ true ]; do
     printf "\r\033[K"
     echo -n "Step #$counter..."
     sleep $INTERVAL
+    # beep once on odd steps and twice on even ones
     eval $CMD ${FILES[@]:0:$(( ($counter + 1) % 2 + 1 ))}
     counter=$((counter+1))
 done
