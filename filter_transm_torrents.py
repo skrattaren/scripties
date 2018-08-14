@@ -11,6 +11,12 @@ from datetime import datetime
 
 import transmissionrpc
 
+# Python 2 hack
+try:
+    input = raw_input
+except NameError:
+    pass
+
 
 def get_args():
     '''
