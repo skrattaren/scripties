@@ -23,12 +23,21 @@ def get_args():
     Parse command line arguments
     '''
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('filter_text', help="word or phrase to look for")
+    parser.add_argument('filter_text', help="word or phrase to look for",
+                        nargs='?')
     parser.add_argument('--age', '-a', type=int, default=7,
                         help="allowed inactivity (in days), default is 7")
     parser.add_argument('--ratio', '-r', type=float, default=1.0,
                         help="minimum required ratio, default is 1.0")
-    return parser.parse_args()
+    parser.add_argument('--case-insensitive', '-i', action='store_true',
+                        help="ignore case when searching for text")
+    args = parser.parse_args()
+    if not args.case_insensitive:
+        return args
+    if not args.filter_text:
+        parser.error("`--case-insensitive` is useless without `filter_text`")
+    args.filter_text = args.filter_text.lower()
+    return args
 
 
 def inactive_for(t):
@@ -47,7 +56,9 @@ def main():
 
     filter_list = []
     if args.filter_text:
-        filter_list.append(lambda t: args.filter_text in t.name)
+        filter_list.append(lambda t: args.filter_text
+                           in (t.name.lower() if args.case_insensitive
+                               else t.name))
     if args.age:
         filter_list.append(lambda t: inactive_for(t).days >= args.age)
     if args.ratio:
