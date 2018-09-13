@@ -69,8 +69,8 @@ def main():
                       t_cl.get_torrents())
     ids_to_remove = []
     for t in torrents:
-        print("'{}' is safe to be removed (inactive for {})"
-              "".format(t.name, inactive_for(t)))
+        print("'{}' is safe to be removed (ratio: {}, inactive for {})"
+              "".format(t.name, t.ratio, inactive_for(t)))
         answer = input("Remove? [Y/n] ").lower()
         if answer and answer != 'y':
             if answer != 'n':
