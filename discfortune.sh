@@ -8,7 +8,6 @@ WHAT="discworld"
 
 fortext="$(fortune $WHAT | fmt -stuw 110)"
 length=$(echo "$fortext" | wc -w)
-let "time=length*1000"
+time=$(( length * 1000 ))
 # ${var^}-syntax is bash4-specific
 sw-notify-send -t $time -- "${WHAT^}" "$fortext"
-
