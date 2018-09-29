@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# Get currently played song from MPD and run the required tool to calculate and
+# write ReplayGain info for the whole album
+
+# Requires:
+# - `mpc` to connect to MPD server
+# - `vorbisgain` for OGG/Vorbis files
+# - `mp3gain` for MP3s
+# - `metaflac` for FLAC
+
 OGG_CMD=("vorbisgain" "-a")
 MP3_CMD=("mp3gain" "-a")
 FLAC_CMD=("metaflac" "--add-replay-gain")
