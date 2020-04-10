@@ -76,7 +76,8 @@ for i in $(seq 2 "$ITERATIONS"); do
     read -s -r -n1 -p "Press Enter when finished..."
     printf "\r\033[K"
     countdown $PRESSUP_INT
-    mpv --msg-level=all=fatal ~/.pressup.snd
+    mpv --msg-level=all=fatal ~/.pressup.snd &> /dev/null \
+        || echo "Error while beeping"
     echo "Set #${i}"
 done
 echo "No need to press anything when finished, just do it (-:E"
